@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,7 @@ import com.shopbridge.dao.spring.ProductDaoImpl;
 import com.shopbridge.dto.Product;
 import com.shopbridge.exception.ProductDaoException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 @RestController
 @RequestMapping(value="/product")
 public class ProductController {
@@ -34,14 +36,14 @@ public class ProductController {
 		return list; 
 	}
 	
-	@GetMapping(value="/getproductbyid:id")
-	List<Product> findProductById(int id){
+	@GetMapping(value="/getproductbyid/{id}")
+	Product findProductById(@PathVariable int id){
 		System.out.println("findProductById Method clalled");
-		List<Product> list=null;
+		Product product = null;
 		
 		try {
 			
-			list = productDaoImpl.findAll();
+			product = productDaoImpl.findProductById(id);
 			
 		} catch (ProductDaoException e) {
 			// TODO Auto-generated catch block
@@ -49,6 +51,19 @@ public class ProductController {
 			System.out.println(e.getCause());
 			e.printStackTrace();
 		}
-		return list; 
+		return product; 
+	}
+	@DeleteMapping("/deleteproduct/{id}")
+	Boolean deleteProductById(@PathVariable int id) {
+		System.out.println("findProductById Method clalled");
+		Boolean result = false;
+	    try {
+	    	result = productDaoImpl.deleteProductById(id);
+	    } 
+	    catch (ProductDaoException e) {
+	    	System.out.println(e.getCause());
+			e.printStackTrace();
+	    }
+	    return result ? true : false;
 	}
 } 

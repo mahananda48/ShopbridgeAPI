@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.shopbridge.dao.ProductDao;
 import com.shopbridge.dto.Product;
@@ -50,9 +52,22 @@ public class ProductDaoImpl extends AbstractDAO implements RowMapper<Product>, P
 	}
 	
 	@Override
-	public Product getProductById(int id) throws ProductDaoException {
-		List<Product> list = jdbcTemplate.query("SELECT PRODUCT_ID, NAME, PRICE, DESCRIPTION, ISDELETED, ISDELETED FROM " + getTableName() + " Where PRODUCT_ID = " + id, this);          
+	public Product findProductById(int id) throws ProductDaoException {
+		List<Product> list = jdbcTemplate.query("SELECT PRODUCT_ID, NAME, PRICE, DESCRIPTION, ISDELETED, ISDELETED FROM " + getTableName() + " Where PRODUCT_ID=" + id, this);         
 		return list.get(0);
+	}
+	
+	@Override
+	public Boolean deleteProductById(int id) throws ProductDaoException {
+		jdbcTemplate.query("DELETE FROM " + getTableName() + " WHERE PRODUCT_ID=" + id, this);         
+		return true;
+	}
+	
+	@Override
+	public Product addProduct(@RequestBody Product newProduct, @PathVariable int id) throws ProductDaoException {
+		Product product = jdbcTemplate.query("INSERT INTO FROM " + getTableName() + " (NAME, PRICE, DESCRIPTION, ISDELETED, IMAGE) " + 
+				"VALUES ('" + newProduct.name + "', '" + newProduct.price + "', 'Stavanger', '4006', 'Norway');" + id, this);         
+		return product;
 	}
 
 }
