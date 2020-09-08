@@ -64,10 +64,10 @@ public class ProductDaoImpl extends AbstractDAO implements RowMapper<Product>, P
 	}
 	
 	@Override
-	public Product addProduct(@RequestBody Product newProduct, @PathVariable int id) throws ProductDaoException {
-		Product product = jdbcTemplate.query("INSERT INTO FROM " + getTableName() + " (NAME, PRICE, DESCRIPTION, ISDELETED, IMAGE) " + 
-				"VALUES ('" + newProduct.name + "', '" + newProduct.price + "', 'Stavanger', '4006', 'Norway');" + id, this);         
-		return product;
+	public Product addProduct(@RequestBody Product newProduct) throws ProductDaoException {
+		List<Product> list = jdbcTemplate.query("INSERT INTO FROM " + getTableName() + " (NAME, PRICE, DESCRIPTION, ISDELETED, IMAGE) " + 
+				"VALUES ('" + newProduct.getName() + "', '" + newProduct.getPrice() + "', '" + "', '" + newProduct.getDescription() +"', '" + false +"', '" + newProduct.getImage() + "');", this);
+		System.out.println("List of product" +list);
+		return list.get(0);
 	}
-
 }

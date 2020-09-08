@@ -1,6 +1,7 @@
 package com.shopbridge.dto;
-
 import java.io.Serializable;
+
+
 
 public class Product implements Serializable {
 
